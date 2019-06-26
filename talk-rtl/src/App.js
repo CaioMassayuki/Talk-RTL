@@ -1,13 +1,15 @@
-import React from 'react';
-import './App.css';
-import FormComp from './FormComponent/FormComponent';
+import React from 'react'
+import './App.css'
+import FormComp from './FormComponent/FormComponent'
 
-function App() {
+const App = () => {
+  const [number, setNumber] = React.useState(1)
   return (
     <div className="App">
-      <FormComp />
+      <button onClick={() => setNumber(number + 1)}>+</button>
+      <FormComp number={number} />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
