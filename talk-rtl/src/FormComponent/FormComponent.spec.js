@@ -48,6 +48,11 @@ describe('<FormComp />, Render all elements', () => {
     const testInfo = await findByTestId('test-informations')
     expect(testInfo).toBeInTheDocument()
   })
+  it('Should dont render Information after button click', () => {
+    const { queryByText } = renderComponent()
+    fireEvent.click(queryByText('Analisar Poder'))
+    expect(queryByText('test-informations')).toBe(null)
+  })
 })
 
 describe('<FormComp />, Functionalities working', () => {
@@ -135,7 +140,7 @@ describe('<FormComp />, Behavior', () => {
   })
 })
 
-describe('<FormComp />, extra', () => {
+describe('<FormComp />, Extras', () => {
   it('Should get number', () => {
     const { getByLabelText, rerender } = renderComponent({ number: 1 })
     expect(getByLabelText('numbertest').value).toBe('1')

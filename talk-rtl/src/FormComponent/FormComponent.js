@@ -49,11 +49,10 @@ const FormComp = ({ number }) => {
     enemy: 'vegeta'
   })
   const [power, setPower] = React.useState(POWER['vegeta'])
-  const [count, setCount] = React.useState(0)
 
   return (
     <>
-      <input className="test" value={number} disabled aria-label="numbertest" />
+      <input className="test" value={number} aria-label="numbertest" readOnly />
       <main className="testForm">
         {loading && <div className="loader" data-testid="test-loader" />}
         <label htmlFor="enemy">Inimigo</label>
@@ -94,6 +93,10 @@ const FormComp = ({ number }) => {
               setShow(true)
               setLoading(false)
             }, 3000)
+          }}
+          onContextMenu={e => {
+            e.preventDefault()
+            setShow(false)
           }}
         >
           Analisar Poder
