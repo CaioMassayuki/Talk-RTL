@@ -92,7 +92,7 @@ const FormComp = ({ number }) => {
                 : setPower(WEAK[info.enemy])
               setShow(true)
               setLoading(false)
-            }, 3000)
+            }, 4500)
           }}
           onContextMenu={e => {
             e.preventDefault()

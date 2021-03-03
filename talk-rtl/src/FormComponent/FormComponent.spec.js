@@ -1,14 +1,10 @@
 import React from 'react'
-import { render, cleanup, fireEvent, act } from '@testing-library/react'
+import { render, fireEvent, waitForElementToBeRemoved } from '@testing-library/react'
 import FormComp from './FormComponent'
-import 'jest-dom/extend-expect'
+import '@testing-library/jest-dom/extend-expect'
 
-const renderComponent = props => render(<FormComp {...props} />)
+const renderComponent = (props) => render(<FormComp {...props} />)
 
-afterEach(() => {
-  jest.clearAllTimers()
-  cleanup()
-})
 describe('<FormComp />, Render all elements', () => {
   it('Should render Nome Input with Label', () => {
     const { getByLabelText } = renderComponent()
@@ -39,12 +35,9 @@ describe('<FormComp />, Render all elements', () => {
     expect(getByRole('main')).toBeInTheDocument()
   })
   it('Should render Information with TestId', async () => {
-    const { findByTestId, getByText } = renderComponent()
-    act(() => {
-      jest.useFakeTimers()
-      fireEvent.click(getByText('Analisar Poder'))
-      jest.advanceTimersByTime()
-    })
+    const { findByTestId, getByText, getByTestId } = renderComponent()
+    fireEvent.click(getByText('Analisar Poder'))
+    await waitForElementToBeRemoved(getByTestId('test-loader'), {timeout: 4500})
     const testInfo = await findByTestId('test-informations')
     expect(testInfo).toBeInTheDocument()
   })
@@ -58,10 +51,8 @@ describe('<FormComp />, Render all elements', () => {
 describe('<FormComp />, Functionalities working', () => {
   it('Should change Enemy Image when other Option is selected', () => {
     const { getByDisplayValue, getByAltText } = renderComponent()
-    act(() => {
-      fireEvent.change(getByDisplayValue('Vegeta'), {
-        target: { value: 'nappa' }
-      })
+    fireEvent.change(getByDisplayValue('Vegeta'), {
+      target: { value: 'nappa' },
     })
     const selectEl = getByAltText('Nappa analisando poder de luta')
     expect(selectEl).toBeInTheDocument()
@@ -72,54 +63,33 @@ describe('<FormComp />, Functionalities working', () => {
     expect(getByTestId('test-loader')).toBeInTheDocument()
   })
   it('Should show correct User Information when Button is clicked', async () => {
-    const { getByLabelText, getByText, findByTestId } = renderComponent()
+    const { getByLabelText, getByText, findByTestId, getByTestId } = renderComponent()
     fireEvent.change(getByLabelText('Nome'), { target: { value: 'TESTE' } })
     fireEvent.change(getByLabelText('Poder'), { target: { value: '1' } })
-    act(() => {
-      jest.useFakeTimers()
-      fireEvent.click(getByText('Analisar Poder'))
-      jest.advanceTimersByTime()
-    })
+    fireEvent.click(getByText('Analisar Poder'))
+    await waitForElementToBeRemoved(getByTestId('test-loader'), {timeout: 4500})
     const testInfo = await findByTestId('test-informations')
     expect(testInfo).toBeInTheDocument()
     expect(testInfo.textContent).toEqual('TESTE tem 1 de poder de luta!')
   })
   it('Should change Enemy Image when Power is over 9000', async () => {
-    const {
-      getByLabelText,
-      getByText,
-      findByTestId,
-      getByAltText
-    } = renderComponent()
+    const { getByLabelText, getByText, findByTestId, getByAltText, getByTestId } = renderComponent()
     const testImg = getByAltText('Vegeta analisando poder de luta')
     fireEvent.change(getByLabelText('Nome'), { target: { value: 'TESTE' } })
     fireEvent.change(getByLabelText('Poder'), { target: { value: '10000' } })
-    act(() => {
-      jest.useFakeTimers()
-      fireEvent.click(getByText('Analisar Poder'))
-      jest.advanceTimersByTime()
-    })
+    fireEvent.click(getByText('Analisar Poder'))
+    await waitForElementToBeRemoved(getByTestId('test-loader'), {timeout: 4500})
     const testInfo = await findByTestId('test-informations')
     expect(testInfo).toBeInTheDocument()
-    expect(testImg.alt).toMatch(
-      'Vegeta diz, O poder de luta dele é mais de 9000'
-    )
+    expect(testImg.alt).toMatch('Vegeta diz, O poder de luta dele é mais de 9000')
   })
   it('Should change Enemy Image when Power is less than 9001', async () => {
-    const {
-      getByLabelText,
-      getByText,
-      findByTestId,
-      getByAltText
-    } = renderComponent()
+    const { getByLabelText, getByText, findByTestId, getByAltText, getByTestId } = renderComponent()
     const testImg = getByAltText('Vegeta analisando poder de luta')
     fireEvent.change(getByLabelText('Nome'), { target: { value: 'TESTE' } })
     fireEvent.change(getByLabelText('Poder'), { target: { value: '1' } })
-    act(() => {
-      jest.useFakeTimers()
-      fireEvent.click(getByText('Analisar Poder'))
-      jest.advanceTimersByTime()
-    })
+    fireEvent.click(getByText('Analisar Poder'))
+    await waitForElementToBeRemoved(getByTestId('test-loader'), {timeout: 4500})
     const testInfo = await findByTestId('test-informations')
     expect(testInfo).toBeInTheDocument()
     expect(testImg.alt).toMatch('Vegeta diz, Você é fraco')
@@ -128,12 +98,9 @@ describe('<FormComp />, Functionalities working', () => {
 
 describe('<FormComp />, Behavior', () => {
   it('Should show default User Information when Button is clicked without informations', async () => {
-    const { findByTestId, getByText } = renderComponent()
-    act(() => {
-      jest.useFakeTimers()
-      fireEvent.click(getByText('Analisar Poder'))
-      jest.advanceTimersByTime()
-    })
+    const { findByTestId, getByText, getByTestId } = renderComponent()
+    fireEvent.click(getByText('Analisar Poder'))
+    await waitForElementToBeRemoved(getByTestId('test-loader'), {timeout: 5000})  
     const testInfo = await findByTestId('test-informations')
     expect(testInfo).toBeInTheDocument()
     expect(testInfo.textContent).toMatch('Kakaroto tem 0 de poder de luta!')
