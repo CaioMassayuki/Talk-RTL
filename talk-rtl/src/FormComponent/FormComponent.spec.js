@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, fireEvent, waitForElementToBeRemoved } from '@testing-library/react'
+import { render, fireEvent, waitForElementToBeRemoved, waitFor } from '@testing-library/react'
 import FormComp from './FormComponent'
 import '@testing-library/jest-dom/extend-expect'
 
@@ -41,6 +41,20 @@ describe('<FormComp />, Render all elements', () => {
     const testInfo = await findByTestId('test-informations')
     expect(testInfo).toBeInTheDocument()
   })
+  
+  /*Mesmo teste mas com Async Function diferente*/
+  // it('Should render Information with TestId', async () => {
+  //   const { getByText, getByTestId } = renderComponent()
+  //   fireEvent.click(getByText('Analisar Poder'))
+  //   await waitFor(() => expect(getByTestId('test-informations')).toBeInTheDocument(), {timeout: 4500})
+  // })
+
+  // it('Should render Information with TestId', async () => {
+  //   const { findByTestId, getByText } = renderComponent()
+  //   fireEvent.click(getByText('Analisar Poder'))
+  //   expect((await findByTestId('test-informations', {}, {timeout: 4500}))).toBeInTheDocument()
+  // })
+
   it('Should dont render Information after button click', () => {
     const { queryByText } = renderComponent()
     fireEvent.click(queryByText('Analisar Poder'))
