@@ -1,5 +1,5 @@
 # Talk-RTL
-Repositório da Talk sobre React Testing Library
+Repositório com código da apresentação sobre React Testing Library feita para a equipe de Frontend da Easynvest.
 
 ## Setup
 
